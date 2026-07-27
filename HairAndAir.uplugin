@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"FriendlyName": "Hair and Air",
+	"Description": "A comprehensive wind simulation plugin for Groom assets with Groom Deformer Graph integration. Supports MetaHuman grooms and real-time hair deformation.",
+	"Category": "Procedural Generation",
+	"CreatedBy": "Hair and Air Team",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EngineVersion": "5.6.0",
+	"CanContainContent": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "HairAndAir",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
