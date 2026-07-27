@@ -36,46 +36,11 @@ void UGroomDeformerComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	// Get wind force from the bound wind simulation
 	FVector WindForce = BoundWindSimulation->GetWindForce(GetOwner()->GetActorLocation());
 
-	// Apply wind deformation
-	ApplyWindDeformation_Implementation(WindForce, DeltaTime);
-}
-
-void UGroomDeformerComponent::ApplyWindDeformation_Implementation(FVector WindForce, float DeltaTime)
-{
-	if (!bEnableDeformation)
-	{
-		return;
-	}
-
 	// Apply damping to smooth the deformation
 	CurrentVelocity = FMath::Lerp(CurrentVelocity, WindForce * DeformationIntensity, 1.0f - DampingFactor);
 
 	// Update groom deformation
 	UpdateGroomDeformation(CurrentVelocity, DeltaTime);
-}
-
-float UGroomDeformerComponent::GetDeformationIntensity_Implementation()
-{
-	return DeformationIntensity;
-}
-
-void UGroomDeformerComponent::SetDeformationIntensity_Implementation(float Intensity)
-{
-	DeformationIntensity = FMath::Clamp(Intensity, 0.0f, 2.0f);
-	UE_LOG(LogTemp, Warning, TEXT("Deformation Intensity set to: %f"), DeformationIntensity);
-}
-
-void UGroomDeformerComponent::BindToWindSimulation_Implementation(AWindSimulation* WindSimulation)
-{
-	BoundWindSimulation = WindSimulation;
-	if (WindSimulation)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("GroomDeformerComponent bound to wind simulation at %s"), *WindSimulation->GetActorLocation().ToString());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("GroomDeformerComponent wind simulation binding cleared"));
-	}
 }
 
 void UGroomDeformerComponent::FindAndBindWindSimulation()
@@ -100,6 +65,17 @@ bool UGroomDeformerComponent::IsDeformationActive() const
 	return bEnableDeformation && BoundWindSimulation != nullptr;
 }
 
+void UGroomDeformerComponent::SetDeformationIntensity(float NewIntensity)
+{
+	DeformationIntensity = FMath::Clamp(NewIntensity, 0.0f, 2.0f);
+	UE_LOG(LogTemp, Warning, TEXT("Deformation Intensity set to: %f"), DeformationIntensity);
+}
+
+float UGroomDeformerComponent::GetDeformationIntensity() const
+{
+	return DeformationIntensity;
+}
+
 void UGroomDeformerComponent::UpdateGroomDeformation(FVector WindForce, float DeltaTime)
 {
 	// This function will be expanded to work with the Deformer Graph system
@@ -113,7 +89,7 @@ void UGroomDeformerComponent::UpdateGroomDeformation(FVector WindForce, float De
 
 	// Apply wind force to groom
 	// The actual deformation will be applied through the Deformer Graph in future updates
-	// UE_LOG(LogTemp, Warning, TEXT("Applying wind deformation to groom: %f"), WindForce.Length());
+	UE_LOG(LogTemp, Warning, TEXT("Applying wind deformation to groom: %f"), WindForce.Length());
 }
 
 UGroomComponent* UGroomDeformerComponent::GetAttachedGroomComponent() const
