@@ -23,8 +23,6 @@ public class HairAndAir : ModuleRules
 				"CoreUObject",
 				"Engine",
 				"HairStrandsCore",
-				"DeformerGraph",
-				"RigVM",
 			}
 		);
 
