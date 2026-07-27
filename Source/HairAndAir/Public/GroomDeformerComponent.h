@@ -4,11 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "GroomDeformerInterface.h"
+#include "GroomComponent.h"
 #include "GroomDeformerComponent.generated.h"
 
 class AWindSimulation;
-class UGroomComponent;
 
 /**
  * Groom Deformer Component
@@ -17,7 +16,7 @@ class UGroomComponent;
  * Attach this component to any actor with a GroomComponent to enable wind effects.
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class HAIRANDAIR_API UGroomDeformerComponent : public UActorComponent, public IGroomDeformerInterface
+class HAIRANDAIR_API UGroomDeformerComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -39,13 +38,7 @@ public:
 
 	// Wind simulation reference
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wind Settings")
-	AWindSimulation* BoundWindSimulation = nullptr;
-
-	// Interface implementations
-	virtual void ApplyWindDeformation_Implementation(FVector WindForce, float DeltaTime) override;
-	virtual float GetDeformationIntensity_Implementation() override;
-	virtual void SetDeformationIntensity_Implementation(float Intensity) override;
-	virtual void BindToWindSimulation_Implementation(AWindSimulation* WindSimulation) override;
+	class AWindSimulation* BoundWindSimulation = nullptr;
 
 	// Blueprint functions
 	UFUNCTION(BlueprintCallable, Category = "Groom Deformation")
@@ -53,6 +46,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Groom Deformation")
 	bool IsDeformationActive() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Groom Deformation")
+	void SetDeformationIntensity(float NewIntensity);
+
+	UFUNCTION(BlueprintCallable, Category = "Groom Deformation")
+	float GetDeformationIntensity() const;
 
 private:
 	// Find attached groom component
